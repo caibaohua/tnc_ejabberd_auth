@@ -51,7 +51,7 @@ start_link(Host, Opts) ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [Host, Opts], []).
 
 check_password(Password) ->
-    case gen_server:call(?MODULE, {get_script, Password}) of
+    case gen_server:call(?MODULE, {get_script}) of
         {ok, Conn} ->
             case eredis:start_link(Conn#connection.host, Conn#connection.port, Conn#connection.database, [], Conn#connection.retry_interval) of
                 {ok, C} ->
@@ -94,7 +94,7 @@ init([Host, Opts]) ->
 %%     Bkts = State#state.buckets,
 
 
-handle_call({get_script, Password}, _From, State) ->
+handle_call({get_script}, _From, State) ->
     Key = random:uniform(State#state.num_buckets)-1,
     case dict:find(Key, State#state.buckets) of
         {ok, Conn} ->
