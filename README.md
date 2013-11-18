@@ -8,6 +8,8 @@ This tool is used to work as ejabberd authentication module.
 2. Copy enbin/*.bean files into path/to/ejabberd/ebin/ (such as /opt/local/lib/ejabberd/ebin/ etc)
 
 ## Settings
+
+ ```erlang
 {host_config,
   	"xmpp.flirten.lab", [
 		{auth_method, tnc},
@@ -22,9 +24,11 @@ This tool is used to work as ejabberd authentication module.
 		]}
 	]
 }.
+```
 
 OR
 
+```erlang
 {host_config,
 	"xmpp1.flirten.lab", [
 		{auth_method, tnc},
@@ -41,3 +45,4 @@ OR
 		]}
 	]
 }.
+```
