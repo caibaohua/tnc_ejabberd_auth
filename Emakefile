@@ -1,5 +1,5 @@
 {'deps/eredis/src/*', [
-	  {outdir, "ebin"},{i,"deps/eredis/include"}
+	  {outdir, "ebin"},{i,"deps/eredis/include"}, debug_info
 ]}.
 
 {'src/*', [
