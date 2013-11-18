@@ -89,11 +89,6 @@ init([Host, Opts]) ->
         {ok, NewState} -> {ok, NewState}
     end.
 
-%% handle_call({get_script, Password}, _From, State) ->
-%%     Key = random:uniform(State#state.num_buckets - 1),
-%%     Bkts = State#state.buckets,
-
-
 handle_call({get_script}, _From, State) ->
     Key = random:uniform(State#state.num_buckets)-1,
     case dict:find(Key, State#state.buckets) of
