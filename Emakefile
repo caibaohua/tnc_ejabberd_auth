@@ -3,5 +3,5 @@
 ]}.
 
 {'src/*', [
-    {outdir, "ebin"},{i,"/opt/local/lib/ejabberd/include"}, debug_info
+    {outdir, "ebin"},{i,"include"}, debug_info
 ]}.

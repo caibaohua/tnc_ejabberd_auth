@@ -58,15 +58,29 @@
 %%%===================================================================
 
 start(Host) ->
-    Proc = gen_mod:get_module_proc(Host, ?MODULE),
-    ChildSpec = {Proc, {?MODULE, start_link, [Host]}, transient, 1000, worker, [?MODULE]},
-    supervisor:start_child(ejabberd_sup, ChildSpec).
+    Proc1 = gen_mod:get_module_proc(Host, ejabberd_auth_tnc),
+    Proc2 = gen_mod:get_module_proc(Host, mod_auth_redis),
+    Proc3 = gen_mod:get_module_proc(Host, mod_auth_memcache),
+    ChildSpec1 = {Proc1, {ejabberd_auth_tnc, start_link, [Host]}, transient, 1000, worker, [ejabberd_auth_tnc]},
+    ChildSpec2 = {Proc2, {mod_auth_redis, start_link, [Host]}, transient, 1000, worker, [mod_auth_redis]},
+    ChildSpec3 = {Proc3, {mod_auth_memcache, start_link, [Host]}, transient, 1000, worker, [mod_auth_memcache]},
+    supervisor:start_child(ejabberd_sup, ChildSpec1),
+    supervisor:start_child(ejabberd_sup, ChildSpec2),
+    supervisor:start_child(ejabberd_sup, ChildSpec3).
 
 stop(Host) ->
-    Proc = gen_mod:get_module_proc(Host, ?MODULE),
-    gen_server:call(Proc, stop),
-    supervisor:terminate_child(ejabberd_sup, Proc),
-    supervisor:delete_child(ejabberd_sup, Proc).
+    Proc1 = gen_mod:get_module_proc(Host, ejabberd_auth_tnc),
+    Proc2 = gen_mod:get_module_proc(Host, mod_auth_redis),
+    Proc3 = gen_mod:get_module_proc(Host, mod_auth_memcache),
+    gen_server:call(Proc1, stop),
+    gen_server:call(Proc2, stop),
+    gen_server:call(Proc3, stop),
+    supervisor:terminate_child(ejabberd_sup, Proc1),
+    supervisor:terminate_child(ejabberd_sup, Proc2),
+    supervisor:terminate_child(ejabberd_sup, Proc3),
+    supervisor:delete_child(ejabberd_sup, Proc1),
+    supervisor:delete_child(ejabberd_sup, Proc2),
+    supervisor:delete_child(ejabberd_sup, Proc3).
 
 start_link(Host) ->
     Proc = gen_mod:get_module_proc(Host, ?MODULE),
